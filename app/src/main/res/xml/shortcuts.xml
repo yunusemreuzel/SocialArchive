@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Kısayol 1: Okunmamışlar -->
+    <shortcut
+        android:shortcutId="unread"
+        android:enabled="true"
+        android:icon="@drawable/ic_bell"
+        android:shortcutShortLabel="@string/shortcut_unread_short"
+        android:shortcutLongLabel="@string/shortcut_unread_long"
+        android:shortcutDisabledMessage="@string/shortcut_disabled">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.socialarchive"
+            android:targetClass="com.socialarchive.ui.main.MainActivity"
+            android:data="socialarchive://filter/unread" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+    <!-- Kısayol 2: Favoriler -->
+    <shortcut
+        android:shortcutId="favorites"
+        android:enabled="true"
+        android:icon="@drawable/ic_favorite_filled"
+        android:shortcutShortLabel="@string/shortcut_favorites_short"
+        android:shortcutLongLabel="@string/shortcut_favorites_long"
+        android:shortcutDisabledMessage="@string/shortcut_disabled">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.socialarchive"
+            android:targetClass="com.socialarchive.ui.main.MainActivity"
+            android:data="socialarchive://filter/favorites" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+    <!-- Kısayol 3: İstatistikler -->
+    <shortcut
+        android:shortcutId="stats"
+        android:enabled="true"
+        android:icon="@drawable/ic_stats"
+        android:shortcutShortLabel="@string/shortcut_stats_short"
+        android:shortcutLongLabel="@string/shortcut_stats_long"
+        android:shortcutDisabledMessage="@string/shortcut_disabled">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.socialarchive"
+            android:targetClass="com.socialarchive.ui.stats.StatsActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+</shortcuts>

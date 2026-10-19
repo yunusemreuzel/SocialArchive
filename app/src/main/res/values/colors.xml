@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Temel renkler -->
+    <color name="background">#0F1117</color>
+    <color name="surface">#1A1D27</color>
+    <color name="surface_variant">#252836</color>
+    <color name="divider">#2A2D3A</color>
+
+    <!-- Birincil / vurgu -->
+    <color name="primary">#7C6EF5</color>
+    <color name="primary_dark">#6356E5</color>
+    <color name="secondary">#5EEAD4</color>
+
+    <!-- Metin -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#9BA3B8</color>
+    <color name="text_hint">#555C6E</color>
+
+    <!-- Platform renkleri -->
+    <color name="twitter">#1DA1F2</color>
+    <color name="instagram">#E1306C</color>
+    <color name="tiktok">#FF0050</color>
+    <color name="youtube">#FF0000</color>
+
+    <!-- Material teması için gerekli isimler -->
+    <color name="colorPrimary">#7C6EF5</color>
+    <color name="colorPrimaryVariant">#6356E5</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSecondary">#5EEAD4</color>
+    <color name="colorOnSecondary">#000000</color>
+    <color name="colorSurface">#1A1D27</color>
+    <color name="colorOnSurface">#FFFFFF</color>
+    <color name="colorBackground">#0F1117</color>
+    <color name="colorOnBackground">#FFFFFF</color>
+    <color name="colorError">#CF6679</color>
+    <color name="colorOnError">#000000</color>
+</resources>

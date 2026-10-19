@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SocialArchive</string>
+    <string name="app_tagline">Sosyal medya arşiviniz</string>
+
+    <!-- Ana ekran -->
+    <string name="search_hint">Ara…</string>
+    <string name="filter_all">Tümü</string>
+    <string name="filter_twitter">Twitter/X</string>
+    <string name="filter_instagram">Instagram</string>
+    <string name="filter_tiktok">TikTok</string>
+    <string name="filter_youtube">YouTube</string>
+    <string name="filter_favorites">⭐ Favoriler</string>
+    <string name="empty_title">Henüz kayıt yok</string>
+    <string name="empty_subtitle">Herhangi bir sosyal medya gönderisinin Paylaş menüsünden SocialArchive\'ı seçerek kaydetmeye başlayın.</string>
+
+    <!-- Gönderi sayısı -->
+    <plurals name="post_count">
+        <item quantity="one">%d kayıt</item>
+        <item quantity="other">%d kayıt</item>
+    </plurals>
+
+    <!-- Share diyaloğu -->
+    <string name="share_title">SocialArchive\'a Kaydet</string>
+    <string name="label_title">Başlık</string>
+    <string name="label_category">Kategori</string>
+    <string name="label_notes">Not (isteğe bağlı)</string>
+    <string name="btn_save">Kaydet</string>
+    <string name="btn_cancel">İptal</string>
+    <string name="url_not_found">URL bulunamadı</string>
+    <string name="error_no_url">Kaydedilecek URL bulunamadı</string>
+    <string name="saved_success">✓ Kaydedildi!</string>
+
+    <!-- Detay ekranı -->
+    <string name="label_url">Bağlantı</string>
+    <string name="label_platform">Platform</string>
+    <string name="label_date">Tarih</string>
+    <string name="label_notes_detail">Notlar</string>
+    <string name="btn_open_url">Orijinali Aç</string>
+    <string name="btn_delete">Sil</string>
+    <string name="added_to_favorites">Favorilere eklendi</string>
+    <string name="removed_from_favorites">Favorilerden çıkarıldı</string>
+
+    <!-- Kategoriler -->
+    <string-array name="categories">
+        <item>Diğer</item>
+        <item>Eğlence</item>
+        <item>Eğitim</item>
+        <item>Haber</item>
+        <item>Müzik</item>
+        <item>Teknoloji</item>
+        <item>Seyahat</item>
+        <item>Yemek</item>
+        <item>Spor</item>
+        <item>Moda</item>
+        <item>Sanat</item>
+        <item>Bilim</item>
+    </string-array>
+
+    <!-- App Shortcuts -->
+    <string name="shortcut_unread_short">Okunmamışlar</string>
+    <string name="shortcut_unread_long">Okunmamış İçerikleri Gör</string>
+    <string name="shortcut_favorites_short">Favoriler</string>
+    <string name="shortcut_favorites_long">Favori Gönderileri Gör</string>
+    <string name="shortcut_stats_short">İstatistik</string>
+    <string name="shortcut_stats_long">Arşiv İstatistiklerini Gör</string>
+    <string name="shortcut_disabled">Bu kısayol artık kullanılamıyor</string>
+</resources>

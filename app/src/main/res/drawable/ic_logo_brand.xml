@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="44dp"
+    android:height="44dp"
+    android:viewportWidth="44"
+    android:viewportHeight="44">
+
+    <!-- Gradient Arka Plan Dairesi -->
+    <path
+        android:pathData="M22,2 A20,20 0,1 1,21.99,2 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="2"
+                android:startY="2"
+                android:endX="42"
+                android:endY="42"
+                android:type="linear">
+                <item android:offset="0.0" android:color="#7C6EF5" />
+                <item android:offset="1.0" android:color="#5EEAD4" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- İç Kitap/Arşiv Logosu -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M16,13 C16,11.9 16.9,11 18,11 L26,11 C27.1,11 28,11.9 28,13 L28,31 L22,27 L16,31 Z"/>
+
+    <!-- Yıldız / Sparkle Süslemesi -->
+    <path
+        android:fillColor="#5EEAD4"
+        android:pathData="M29,11 L29.5,12.2 L30.7,12.2 L29.7,12.9 L30.1,14.1 L29,13.3 L27.9,14.1 L28.3,12.9 L27.3,12.2 L28.5,12.2 Z"/>
+</vector>

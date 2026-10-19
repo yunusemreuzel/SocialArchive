@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_bottom_sheet"
+    android:padding="20dp">
+
+    <!-- Tutamaç çizgisi -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/divider"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sıralama Seçenekleri"
+        android:textColor="@color/text_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <RadioGroup
+        android:id="@+id/rgSort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/rbNewest"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="En Yeni"
+            android:textColor="@color/text_primary"
+            android:buttonTint="@color/primary"/>
+
+        <RadioButton
+            android:id="@+id/rbOldest"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="En Eski"
+            android:textColor="@color/text_primary"
+            android:buttonTint="@color/primary"/>
+
+        <RadioButton
+            android:id="@+id/rbPlatform"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Platform"
+            android:textColor="@color/text_primary"
+            android:buttonTint="@color/primary"/>
+
+        <RadioButton
+            android:id="@+id/rbFavoritesFirst"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Favoriler Önce"
+            android:textColor="@color/text_primary"
+            android:buttonTint="@color/primary"/>
+
+        <RadioButton
+            android:id="@+id/rbUnreadFirst"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Okunmamışlar Önce"
+            android:textColor="@color/text_primary"
+            android:buttonTint="@color/primary"/>
+    </RadioGroup>
+</LinearLayout>

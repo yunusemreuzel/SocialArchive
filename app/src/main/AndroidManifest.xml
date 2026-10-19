@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <application
+        android:label="SocialArchive"
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@style/Theme.SocialArchive"
+        android:allowBackup="true"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true">
+
+        <!-- Ana ekran -->
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <!-- App Shortcuts -->
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+            <!-- Deep link: socialarchive://filter/unread veya favorites -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="socialarchive" android:host="filter"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Detay ekranı -->
+        <activity
+            android:name=".ui.detail.DetailActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.main.MainActivity"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <!-- Share Intent alıcısı — uygulamanın kalbi -->
+        <activity
+            android:name=".ui.share.ShareReceiverActivity"
+            android:exported="true"
+            android:theme="@style/Theme.SocialArchive.BottomSheet"
+            android:windowSoftInputMode="adjustResize">
+
+            <!-- text/plain paylaşımları (URL metni) -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+
+            <!-- text/html paylaşımları (bazı uygulamalar HTML linki gönderir) -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/html"/>
+            </intent-filter>
+        </activity>
+
+        <!-- İstatistik ekranı -->
+        <activity
+            android:name=".ui.stats.StatsActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.main.MainActivity"/>
+
+    </application>
+</manifest>
