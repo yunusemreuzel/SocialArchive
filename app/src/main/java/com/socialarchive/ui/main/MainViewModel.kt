@@ -34,6 +34,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _selectedCategory = MutableStateFlow<String?>(null)
     val selectedCategory: StateFlow<String?> = _selectedCategory.asStateFlow()
 
+    private val _statusFilter = MutableStateFlow<PostStatus?>(null)
+    val statusFilter: StateFlow<PostStatus?> = _statusFilter.asStateFlow()
+
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
@@ -49,13 +52,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val posts: StateFlow<List<SavedPostWithTags>> = combine(
         repository.getAllPostsWithTags(),
         combine(
-            _selectedPlatform,
-            _selectedCategory,
-            _searchQuery,
-            _showFavoritesOnly,
-            _sortOrder
-        ) { platform, category, query, favOnly, sort ->
-            FilterParams(platform, category, query, favOnly, sort)
+            combine(
+                _selectedPlatform,
+                _selectedCategory,
+                _statusFilter
+            ) { p, c, s -> Triple(p, c, s) },
+            combine(
+                _searchQuery,
+                _showFavoritesOnly,
+                _sortOrder
+            ) { q, f, s -> Triple(q, f, s) }
+        ) { (p, c, s), (q, f, sort) ->
+            FilterParams(p, c, s, q, f, sort)
         }
     ) { allPosts, filter ->
         var filteredList = allPosts
@@ -68,6 +76,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         // 1b. Category Filter (Content Type)
         if (filter.category != null) {
             filteredList = filteredList.filter { it.post.category.equals(filter.category, ignoreCase = true) }
+        }
+
+        // 1c. Status Filter (READ / UNREAD)
+        if (filter.status != null) {
+            filteredList = filteredList.filter { it.post.status == filter.status }
         }
 
         // 2. Favorites Filter
@@ -122,9 +135,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _selectedCategory.value = category
     }
 
+    fun setStatusFilter(status: PostStatus?) {
+        _statusFilter.value = status
+    }
+
+    fun setFavoritesOnly(favOnly: Boolean) {
+        _showFavoritesOnly.value = favOnly
+    }
+
     fun addCategory(category: Category, onComplete: ((Boolean) -> Unit)? = null) {
         viewModelScope.launch {
             val success = repository.addCategory(category.name, category.icon)
+            onComplete?.invoke(success)
+        }
+    }
+
+    fun updateCategory(oldName: String, newName: String, newIcon: String, onComplete: ((Boolean) -> Unit)? = null) {
+        viewModelScope.launch {
+            val success = repository.updateCategory(oldName, newName, newIcon)
+            if (success && _selectedCategory.value == oldName) {
+                _selectedCategory.value = newName.trim()
+            }
             onComplete?.invoke(success)
         }
     }
@@ -224,6 +255,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 private data class FilterParams(
     val platform: Platform?,
     val category: String?,
+    val status: PostStatus?,
     val query: String,
     val favOnly: Boolean,
     val sort: SortOrder

@@ -22,6 +22,9 @@ interface CategoryDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertCategories(categories: List<Category>)
 
+    @Query("UPDATE categories SET name = :newName, icon = :newIcon WHERE name = :oldName")
+    suspend fun updateCategory(oldName: String, newName: String, newIcon: String)
+
     @Delete
     suspend fun deleteCategory(category: Category)
 

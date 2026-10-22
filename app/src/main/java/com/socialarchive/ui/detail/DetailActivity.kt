@@ -140,7 +140,10 @@ class DetailActivity : AppCompatActivity() {
         bindReminderStatus(p)
 
         binding.btnOpenUrl.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(p.url)))
+            openExternalUrl(p.url)
+        }
+        binding.tvUrl.setOnClickListener {
+            openExternalUrl(p.url)
         }
 
         binding.btnFavorite.setOnClickListener {
@@ -349,6 +352,19 @@ class DetailActivity : AppCompatActivity() {
                 }
                 .setNegativeButton("İptal", null)
                 .show()
+        }
+    }
+
+    private fun openExternalUrl(url: String) {
+        if (url.isBlank()) return
+        try {
+            val uri = Uri.parse(url)
+            val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(this, "Bağlantı açılamadı", Toast.LENGTH_SHORT).show()
         }
     }
 }

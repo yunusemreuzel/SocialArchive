@@ -19,6 +19,7 @@
         android:background="#555C6E" />
 
     <TextView
+        android:id="@+id/tvDialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Yeni Kategori Ekle"
@@ -28,6 +29,7 @@
         android:layout_marginBottom="4dp" />
 
     <TextView
+        android:id="@+id/tvDialogSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Bir simge seçin ve kategori adını belirleyin"

@@ -203,6 +203,45 @@
                 android:layout_marginEnd="8dp"/>
 
             <TextView
+                android:id="@+id/chipUnread"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:gravity="center"
+                android:text="📬 Okunmamış"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:background="@drawable/bg_chip_unselected"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:id="@+id/chipRead"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:gravity="center"
+                android:text="✓ Okunmuş"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:background="@drawable/bg_chip_unselected"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:id="@+id/chipFavorites"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:gravity="center"
+                android:text="⭐ Favoriler"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:background="@drawable/bg_chip_unselected"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
                 android:id="@+id/chipTwitter"
                 android:layout_width="wrap_content"
                 android:layout_height="34dp"
@@ -247,19 +286,6 @@
                 android:layout_height="34dp"
                 android:gravity="center"
                 android:text="▶ YouTube"
-                android:textColor="@color/text_secondary"
-                android:textSize="13sp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:background="@drawable/bg_chip_unselected"
-                android:layout_marginEnd="8dp"/>
-
-            <TextView
-                android:id="@+id/chipFavorites"
-                android:layout_width="wrap_content"
-                android:layout_height="34dp"
-                android:gravity="center"
-                android:text="⭐ Favoriler"
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
                 android:paddingStart="16dp"

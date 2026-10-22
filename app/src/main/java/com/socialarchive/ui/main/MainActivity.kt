@@ -43,11 +43,13 @@ class MainActivity : AppCompatActivity() {
     // Chip TextView'ların listesi — seçim yönetimi için
     private val chipViews get() = listOf(
         binding.chipAll,
+        binding.chipUnread,
+        binding.chipRead,
+        binding.chipFavorites,
         binding.chipTwitter,
         binding.chipInstagram,
         binding.chipTiktok,
-        binding.chipYoutube,
-        binding.chipFavorites
+        binding.chipYoutube
     )
 
     // JSON İçe Aktarma Dosya Seçicisi
@@ -130,11 +132,16 @@ class MainActivity : AppCompatActivity() {
         intent?.data?.let { uri ->
             when (uri.lastPathSegment) {
                 "unread" -> {
+                    selectChip(binding.chipUnread)
                     viewModel.setFilter(null)
-                    // Unread filter chip select is done after chips are set up
+                    viewModel.setStatusFilter(com.socialarchive.data.model.PostStatus.UNREAD)
+                    viewModel.setFavoritesOnly(false)
                 }
                 "favorites" -> {
-                    viewModel.toggleFavoritesOnly()
+                    selectChip(binding.chipFavorites)
+                    viewModel.setFilter(null)
+                    viewModel.setStatusFilter(null)
+                    viewModel.setFavoritesOnly(true)
                 }
             }
         }
@@ -248,26 +255,50 @@ class MainActivity : AppCompatActivity() {
         binding.chipAll.setOnClickListener {
             selectChip(binding.chipAll)
             viewModel.setFilter(null)
+            viewModel.setStatusFilter(null)
+            viewModel.setFavoritesOnly(false)
+        }
+        binding.chipUnread.setOnClickListener {
+            selectChip(binding.chipUnread)
+            viewModel.setFilter(null)
+            viewModel.setStatusFilter(com.socialarchive.data.model.PostStatus.UNREAD)
+            viewModel.setFavoritesOnly(false)
+        }
+        binding.chipRead.setOnClickListener {
+            selectChip(binding.chipRead)
+            viewModel.setFilter(null)
+            viewModel.setStatusFilter(com.socialarchive.data.model.PostStatus.READ)
+            viewModel.setFavoritesOnly(false)
+        }
+        binding.chipFavorites.setOnClickListener {
+            selectChip(binding.chipFavorites)
+            viewModel.setFilter(null)
+            viewModel.setStatusFilter(null)
+            viewModel.setFavoritesOnly(true)
         }
         binding.chipTwitter.setOnClickListener {
             selectChip(binding.chipTwitter)
             viewModel.setFilter(Platform.TWITTER)
+            viewModel.setStatusFilter(null)
+            viewModel.setFavoritesOnly(false)
         }
         binding.chipInstagram.setOnClickListener {
             selectChip(binding.chipInstagram)
             viewModel.setFilter(Platform.INSTAGRAM)
+            viewModel.setStatusFilter(null)
+            viewModel.setFavoritesOnly(false)
         }
         binding.chipTiktok.setOnClickListener {
             selectChip(binding.chipTiktok)
             viewModel.setFilter(Platform.TIKTOK)
+            viewModel.setStatusFilter(null)
+            viewModel.setFavoritesOnly(false)
         }
         binding.chipYoutube.setOnClickListener {
             selectChip(binding.chipYoutube)
             viewModel.setFilter(Platform.YOUTUBE)
-        }
-        binding.chipFavorites.setOnClickListener {
-            selectChip(binding.chipFavorites)
-            viewModel.toggleFavoritesOnly()
+            viewModel.setStatusFilter(null)
+            viewModel.setFavoritesOnly(false)
         }
     }
 
@@ -335,17 +366,38 @@ class MainActivity : AppCompatActivity() {
                     viewModel.setCategoryFilter(cat.name)
                 }
 
-                // Özel kategoriler için uzun basıldığında silme seçeneği
+                // Özel kategoriler için uzun basıldığında düzenleme ve silme seçenekleri
                 if (cat.isCustom) {
                     setOnLongClickListener {
+                        val options = arrayOf("✏️ Kategoriyi Düzenle", "🗑️ Kategoriyi Sil")
                         AlertDialog.Builder(this@MainActivity)
-                            .setTitle("Kategoriyi Sil")
-                            .setMessage("\"${cat.displayName}\" kategorisini silmek istediğinize emin misiniz?")
-                            .setPositiveButton("Sil") { _, _ ->
-                                viewModel.deleteCategory(cat)
-                                Toast.makeText(this@MainActivity, "\"${cat.name}\" silindi", Toast.LENGTH_SHORT).show()
+                            .setTitle(cat.displayName)
+                            .setItems(options) { _, which ->
+                                when (which) {
+                                    0 -> {
+                                        CategoryDialogHelper.showEditCategoryDialog(this@MainActivity, cat) { newName, newIcon ->
+                                            viewModel.updateCategory(cat.name, newName, newIcon) { success ->
+                                                if (success) {
+                                                    Toast.makeText(this@MainActivity, "\"$newName\" güncellendi", Toast.LENGTH_SHORT).show()
+                                                } else {
+                                                    Toast.makeText(this@MainActivity, "Bu isimde bir kategori zaten mevcut", Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                        }
+                                    }
+                                    1 -> {
+                                        AlertDialog.Builder(this@MainActivity)
+                                            .setTitle("Kategoriyi Sil")
+                                            .setMessage("\"${cat.displayName}\" kategorisini silmek istediğinize emin misiniz?\n\nBu kategorideki gönderiler \"Diğer\" kategorisine aktarılacaktır.")
+                                            .setPositiveButton("Sil") { _, _ ->
+                                                viewModel.deleteCategory(cat)
+                                                Toast.makeText(this@MainActivity, "\"${cat.name}\" silindi", Toast.LENGTH_SHORT).show()
+                                            }
+                                            .setNegativeButton("İptal", null)
+                                            .show()
+                                    }
+                                }
                             }
-                            .setNegativeButton("İptal", null)
                             .show()
                         true
                     }
@@ -553,6 +605,14 @@ class MainActivity : AppCompatActivity() {
             "$total kayıt ($unread okunmamış)"
         } else {
             "$total kayıt"
+        }
+        binding.tvPostCount.setOnClickListener {
+            if (unread > 0) {
+                selectChip(binding.chipUnread)
+                viewModel.setFilter(null)
+                viewModel.setStatusFilter(com.socialarchive.data.model.PostStatus.UNREAD)
+                viewModel.setFavoritesOnly(false)
+            }
         }
     }
 }

@@ -112,6 +112,23 @@ class PostRepository(context: Context) {
         return categoryDao.insertCategory(category) > 0
     }
 
+    suspend fun updateCategory(oldName: String, newName: String, newIcon: String): Boolean {
+        val cleanNewName = newName.trim()
+        if (cleanNewName.isEmpty()) return false
+        val cleanIcon = if (newIcon.trim().isEmpty()) "📁" else newIcon.trim()
+
+        if (!cleanNewName.equals(oldName, ignoreCase = true)) {
+            val existing = categoryDao.getCategoryByName(cleanNewName)
+            if (existing != null) return false
+        }
+
+        categoryDao.updateCategory(oldName, cleanNewName, cleanIcon)
+        if (cleanNewName != oldName) {
+            dao.reassignCategory(oldName, cleanNewName)
+        }
+        return true
+    }
+
     suspend fun deleteCategory(category: Category) {
         if (category.isCustom) {
             dao.reassignCategory(category.name, "Diğer")
