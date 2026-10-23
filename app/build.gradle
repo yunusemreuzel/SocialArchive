@@ -66,4 +66,7 @@ dependencies {
 
     // WorkManager for reminders
     implementation 'androidx.work:work-runtime-ktx:2.9.0'
+
+    // Chrome Custom Tabs for safe in-app web viewing
+    implementation 'androidx.browser:browser:1.8.0'
 }

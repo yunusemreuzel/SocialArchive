@@ -142,6 +142,10 @@ class DetailActivity : AppCompatActivity() {
         binding.btnOpenUrl.setOnClickListener {
             openExternalUrl(p.url)
         }
+        binding.btnOpenUrl.setOnLongClickListener {
+            showOpenOptionsDialog(p.url)
+            true
+        }
         binding.tvUrl.setOnClickListener {
             openExternalUrl(p.url)
         }
@@ -355,11 +359,124 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun openExternalUrl(url: String) {
+    private fun openExternalUrl(url: String, forceExternalApp: Boolean = false) {
         if (url.isBlank()) return
+        val isTwitter = url.contains("twitter.com", ignoreCase = true) || url.contains("x.com", ignoreCase = true)
+
+        if (!forceExternalApp && isTwitter) {
+            // Twitter Android uygulaması harici linklerde yapay back-stack oluşturup
+            // geri tuşuna basıldığında ana akışa yönlendirir.
+            // Custom Tabs ile açarak geri basıldığında SocialArchive'a dönmeyi garanti ediyoruz.
+            openInCustomTabs(url)
+            return
+        }
+
+        openInNativeApp(url)
+    }
+
+    private fun showOpenOptionsDialog(url: String) {
+        val options = arrayOf(
+            "🌐 Uygulama İçi (Geri Dönüş Garantili)",
+            "📱 Harici Uygulamada Aç"
+        )
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Bağlantıyı Nasıl Açmak İstersiniz?")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> openInCustomTabs(url)
+                    1 -> openInNativeApp(url)
+                }
+            }
+            .setNegativeButton("İptal", null)
+            .show()
+    }
+
+    private fun openInCustomTabs(url: String) {
+        val uri = Uri.parse(url)
+        val browserPkg = getBrowserPackageName()
+
         try {
-            val uri = Uri.parse(url)
-            val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+            val customTabsIntent = androidx.browser.customtabs.CustomTabsIntent.Builder()
+                .setShowTitle(true)
+                .build()
+
+            if (browserPkg != null) {
+                customTabsIntent.intent.setPackage(browserPkg)
+            }
+            customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            customTabsIntent.launchUrl(this, uri)
+            return
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        // CustomTabs başarısız olursa tarayıcı paketine zorlayarak aç
+        if (browserPkg != null) {
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+                    setPackage(browserPkg)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                startActivity(intent)
+                return
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        openInNativeApp(url)
+    }
+
+    private fun getBrowserPackageName(): String? {
+        val cctPkg = androidx.browser.customtabs.CustomTabsClient.getPackageName(this, null)
+        if (!cctPkg.isNullOrEmpty() &&
+            !cctPkg.contains("twitter", ignoreCase = true) &&
+            !cctPkg.contains("instagram", ignoreCase = true)
+        ) {
+            return cctPkg
+        }
+
+        try {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"))
+            val resolveInfos = packageManager.queryIntentActivities(
+                browserIntent,
+                android.content.pm.PackageManager.MATCH_DEFAULT_ONLY
+            )
+            for (info in resolveInfos) {
+                val pkg = info.activityInfo.packageName
+                if (!pkg.contains("twitter", ignoreCase = true) &&
+                    !pkg.contains("instagram", ignoreCase = true) &&
+                    !pkg.contains("facebook", ignoreCase = true)
+                ) {
+                    return pkg
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        val commonBrowsers = listOf(
+            "com.android.chrome",
+            "com.sec.android.app.sbrowser",
+            "org.mozilla.firefox",
+            "com.microsoft.emmx",
+            "com.brave.browser",
+            "com.opera.browser"
+        )
+        for (b in commonBrowsers) {
+            try {
+                packageManager.getPackageInfo(b, 0)
+                return b
+            } catch (e: Exception) {
+                // Denemeye devam et
+            }
+        }
+        return null
+    }
+
+    private fun openInNativeApp(url: String) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             startActivity(intent)
