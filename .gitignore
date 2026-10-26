@@ -19,3 +19,11 @@ captures/
 *.apk
 *.aab
 *.ap_
+
+# Auto-added safety ignores
+*.hprof
+_internal/
+**/_internal/
+*.exe
+build-tools/
+**/build-tools/
